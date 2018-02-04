@@ -36,7 +36,6 @@ class NewPost extends Component {
 		})
 	}
 
-	//WHY ISNT THERE ACTUAL SUBSTANCE TO THE POST??????
 	sendPost = (e) => {
 		e.preventDefault();
 		this.props.addPost({
@@ -44,6 +43,8 @@ class NewPost extends Component {
 			timestamp: Date.now(),
 			...omit(this.state, 'isOpen')
 		});
+
+		this.setState({ isOpen: false });
 	}
 
 	render(){
@@ -87,7 +88,7 @@ class NewPost extends Component {
 	}
 }
 
-function mapStateToProps({categories}){
+function mapStateToProps({ categories }){
 	return {
 		categories: categories
 	}

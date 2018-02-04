@@ -2,6 +2,7 @@ export const GET_POSTS = 'GET_POSTS';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const GET_COMMENTS = 'GET_COMMENTS';
 export const CREATE_POST = 'CREATE_POST';
+export const CREATE_COMMENT = 'CREATE_COMMENT';
 
 export function getPosts (posts){
 	return {
@@ -28,5 +29,12 @@ export function createPost (post){
 	return {
 		type: CREATE_POST,
 		post
+	}
+}
+
+export function createComment (comment){
+	return {
+		type: CREATE_COMMENT,
+		comment
 	}
 }

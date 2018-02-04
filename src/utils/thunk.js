@@ -4,7 +4,8 @@ import {
 	getPosts,
 	getCategories,
 	getComments,
-	createPost
+	createPost,
+	createComment
 } from '../actions';
 
 export const fetchPosts = () => dispatch => (
@@ -29,13 +30,20 @@ export const fetchComments = posts => dispatch => (
 		.then((comments) => dispatch(getComments(comments.reduce( (a, n) => a.concat(n), []))))
 );
 
-//incomplete, to come back to after getting comment fetch to work??
 export const addPost = post => {
 	return (dispatch) => {
-		// console.log("thunk post: ", post);
 		API.sendPost(post)
 			.then((res) => {
 				dispatch(createPost(post));
 			});
+	}
+}
+
+export const addComment = comment => {
+	return (dispatch) => {
+		API.sendComment(comment)
+			.then((res) => {
+				dispatch(createComment(comment));
+			})
 	}
 }

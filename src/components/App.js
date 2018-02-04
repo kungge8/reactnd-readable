@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './App.css';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash';
 import Post from './Post';
 import NewPost from './NewPost';
 
@@ -47,16 +47,17 @@ class App extends Component {
   // };
 
   filterComments = (postId) => {
-    if (this.props.comments){
-      return "filterComments in if";
+    if (!this.props.comment || isEmpty(this.props.comment)){
+      return {};
+      // return this.props.comment.filter((n) => n.parentId === postId);
       // return (this.props.comments.filter((n) => n.id === postId));
     } else {
-      return "filterComments in else";
+      return this.props.comment.filter((n) => n.parentId === postId);
     }
   };
 
   render() {
-    console.log(this.props);
+    console.log("APP rendered: ", this.props);
     return (
       <div className="App">
         <header>
@@ -64,14 +65,17 @@ class App extends Component {
           <NewPost />
         </header>
 
-
         <div>
           <select onChange={this.categorySelect}>
             <option value="All">All</option>
-            { (this.props.categories.categories) ? this.props.categories.categories.map((n) => <option key={n.name} value={n.name}>{n.name}</option>) : "NO CATEGORIES FOUND"}
+            { (this.props.categories)
+              ? this.props.categories.map((n) => <option key={n.name} value={n.name}>{n.name}</option>)
+              : "NO CATEGORIES FOUND" }
           </select>    
 
-          { (!this.props.post[0]) ?  "NO POSTS FOUND" : this.props.post.filter((n) => (this.state.selectedCat) ? n.category === this.state.selectedCat : n).map((n) => <Post key={n.id} post={n} commments={this.filterComments(n.id)}/>) }
+          { (!this.props.post[0]) 
+            ?  "NO POSTS FOUND"
+            : this.props.post.filter((n) => (this.state.selectedCat) ? n.category === this.state.selectedCat : n).map((m) => <Post key={m.id} post={m} comments={this.filterComments(m.id)}/>) }
 
         </div>
       </div>
@@ -83,7 +87,7 @@ function mapStateToProps({post, comment, categories}) {
   return {
     post: post,
     comment: comment,
-    categories: categories
+    categories: categories.categories
   }
 }
 

@@ -29,3 +29,11 @@ export const sendPost = (post) => {
 		body: JSON.stringify(post)
 	});
 }
+
+export const sendComment = (comment) => {
+	return fetch(`${url}/comments`, {
+		method: `POST`,
+		headers: headers,
+		body: JSON.stringify(comment)
+	})
+}

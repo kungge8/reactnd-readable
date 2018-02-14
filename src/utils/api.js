@@ -22,18 +22,63 @@ export const getComments = (postId = '') => {
 };
 
 export const sendPost = (post) => {
-	// console.log("API post: ", post);
 	return fetch(`${url}/posts`, {
 		method: `POST`,
 		headers: headers,
 		body: JSON.stringify(post)
 	});
-}
+};
+
+export const postVote = (vote, postId) => {
+	return fetch(`${url}/posts/${postId}`, {
+		method: `POST`,
+		headers: headers,
+		body: JSON.stringify(vote)
+	});
+};
+
+export const editPost = (postData, postId) => {
+	return fetch(`${url}/posts/${postId}`, {
+		method: `PUT`,
+		headers: headers,
+		body: JSON.stringify(postData)
+	});
+};
+
+export const deletePost = (postId) => {
+	return fetch(`${url}/posts/${postId}`, {
+		method: `DELETE`,
+		headers: headers
+	})
+};
 
 export const sendComment = (comment) => {
 	return fetch(`${url}/comments`, {
 		method: `POST`,
 		headers: headers,
 		body: JSON.stringify(comment)
+	});
+};
+
+export const commentVote = (vote, commentId) => {
+	return fetch(`${url}/comments/${commentId}`, {
+		method: `POST`,
+		headers: headers,
+		body: JSON.stringify(vote)
+	});
+};
+
+export const editComment = (commentData, commentId) => {
+	return fetch(`${url}/comments/${commentId}`, {
+		method: `PUT`,
+		headers: headers,
+		body: JSON.stringify(commentData)
+	});
+};
+
+export const deleteComment = (commentId) => {
+	return fetch(`${url}/comments/${commentId}`, {
+		method: `DELETE`,
+		headers: headers
 	})
-}
+};

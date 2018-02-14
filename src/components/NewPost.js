@@ -1,25 +1,14 @@
 import React, { Component } from 'react';
-import { omit } from 'lodash';
 import { connect } from 'react-redux';
 import ID from 'uniqid';
 import { addPost } from '../utils/thunk.js';
-// import './App.css';
-import { Button, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import { Button, FormGroup, FormControl, ControlLabel, Panel, Grid } from 'react-bootstrap';
 
 class NewPost extends Component {
 	state = {
-		isOpen: false,
 		title: "",
 		body: "",
 		author: "Alexander"
-	}
-
-	toggleOpen = () => {
-		if (this.state.isOpen){
-			this.setState({isOpen: false});
-		} else {
-			this.setState({isOpen: true});
-		}
 	}
 
 	handleTitle = (e) => {
@@ -41,56 +30,60 @@ class NewPost extends Component {
 		this.props.addPost({
 			id: ID(),
 			timestamp: Date.now(),
-			...omit(this.state, 'isOpen')
+			...this.state
 		});
-
-		this.setState({ isOpen: false });
 	}
 
 	render(){
 		return (
-			<div>
-				{(this.state.isOpen)
-					?	<div>
-							<form>
-								<FormGroup
-									controlId="formBasicText"
-								>
-									<ControlLabel>Testing forms</ControlLabel>
-									<FormControl
-										type="text"
-										value={this.state.title}
-										placeholder="Enter Title"
-										onChange={this.handleTitle}
-									/>
+			<Grid>
+				<Panel>
+					<Panel.Heading>
+						<Panel.Title>
+							{'Submit a new Post!'}
+						</Panel.Title>
+					</Panel.Heading>
 
-									<ControlLabel>Select Category</ControlLabel>
-									<select onChange={this.categorySelect}>
-										<option value="none">Select a Category</option>
-				            { (this.props.categories.categories) ? this.props.categories.categories.map((n) => <option key={n.name} value={n.name}>{n.name}</option>) : "NO CATEGORIES FOUND"}
-				          </select>
+					<Panel.Body>
+						<form>
+							<FormGroup controlId="formBasicText">
+								<ControlLabel>Post Title</ControlLabel>
+								<FormControl
+									type="text"
+									value={this.state.title}
+									placeholder="Enter Title"
+									onChange={this.handleTitle}
+								/>
 
-									<FormControl
-										type="text"
-										value={this.state.postBody}
-										placeholder="What are you posting?"
-										onChange={this.handlePostBody}
-									/>
-									<FormControl.Feedback />
-								</FormGroup>
-							</form>
-							<Button onClick={this.sendPost}>Submit</Button>
-							<Button onClick={this.toggleOpen}>Close</Button>
-						</div>
-					: <Button onClick={this.toggleOpen}>Add New Post!</Button>}
-			</div>
+								<ControlLabel>Select Category</ControlLabel>
+								<select onChange={this.categorySelect}>
+									<option value="none">Select a Category</option>
+			            { (this.props.categories) ? this.props.categories.map((n) => <option key={n.name} value={n.name}>{n.name}</option>) : "NO CATEGORIES FOUND"}
+			          </select>
+
+								<FormControl
+									type="text"
+									value={this.state.body}
+									placeholder="What are you posting?"
+									onChange={this.handlePostBody}
+								/>
+								<FormControl.Feedback />
+							</FormGroup>
+						</form>
+					</Panel.Body>
+
+					<Panel.Footer className={'clearfix'}>
+						<Button className={'pull-right'} onClick={this.sendPost}>Submit</Button>
+					</Panel.Footer>
+				</Panel>
+			</Grid>
 		);
 	}
 }
 
 function mapStateToProps({ categories }){
 	return {
-		categories: categories
+		categories: categories.categories
 	}
 }
 

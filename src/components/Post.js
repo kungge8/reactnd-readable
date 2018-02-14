@@ -1,61 +1,51 @@
 import React, {Component} from 'react';
-import NewComment from './NewComment';
-import Comment from './Comment';
 import { connect } from 'react-redux';
-import { isEmpty } from 'lodash';
-import { Panel, Button } from 'react-bootstrap';
+import { Panel, Button, Badge } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import { sendVotePost } from '../utils/thunk';
+
 
 class Post extends Component {
-	state = {
-		commentsOpen: false
-	};
+	sendVote = (e) => {
+		e.preventDefault();
+		this.props.sendVotePost({ option: e.target.value }, this.props.post.id);
+	}
 
-	toggleComments = (e) => {
-		if (this.state.commentsOpen){
-			this.setState({ commentsOpen: false });
-		} else {
-			this.setState({ commentsOpen: true });
-		}
-	};
-
+	//why is post not rerendering after upvote count is changed? no change in state detected?
 	render() {
+		const { title, author, body, category, id, voteScore, timestamp } = this.props.post;
 		return (
 			<Panel>
 				<Panel.Heading>
-					<Panel.Title toggle>
-						{this.props.post.title}
+					<Panel.Title>
+						{title} - {author}
 					</Panel.Title>
 				</Panel.Heading>
 
-				<Panel.Collapse>
-					<Panel.Body>
-						{this.props.post.body}
-					</Panel.Body>
+				<Panel.Body>
+					{body}
+				</Panel.Body>
 
-					<Panel.Footer>
-						<Button onClick={this.toggleComments}>{(this.state.commentsOpen) ? "Hide Comments" : "Show Comments"}</Button>
+				<Panel.Footer className={'clearfix'}>
+					<Badge>{this.props.comments.filter((n) => n.parentId === id).length}</Badge> {'Comments '}
+					<Badge>{voteScore}</Badge> {'Upvotes! '}
+					Posted {Date(timestamp)}
+					<Button className={'pull-right'} onClick={this.sendVote} value="downVote">Downvote</Button>
+					<Button className={'pull-right'} onClick={this.sendVote} value="upVote">Upvote</Button>
+					<LinkContainer className={'pull-right'} to={`/${category}/${id}`}><Button>Detailed View</Button></LinkContainer>
 
-						{(this.state.commentsOpen)
-							?	<div>
-									<NewComment parentId={this.props.post.id} />
-									{(!isEmpty(this.props.comments))
-										? this.props.comments.map((n) => <Comment key={n.id} commentData = {n} />)
-										: ""}
-								</div>
-							: <div />}
-					</Panel.Footer>
-				</Panel.Collapse>
+
+				</Panel.Footer>
 			</Panel>
 		);
 	}
 }
 
-// function mapStateToProps({ comment }) {
-// 	return {
-// 		comments: comment
-// 	}
-// }
+//use this to display #of comments in Display
+function mapStateToProps({ comment }) {
+	return {
+		comments: comment
+	}
+}
 
-// export default connect(mapStateToProps)(Post);
-
-export default Post;
+export default connect(mapStateToProps, { sendVotePost })(Post);

@@ -1,94 +1,79 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { isEmpty } from 'lodash';
-import Post from './Post';
+import Display from "./Display";
 import NewPost from './NewPost';
+import PostDetail from './PostDetail';
+import EditPost from './EditPost';
+import EditComment from './EditComment';
+import { Link, Route, withRouter, Switch } from 'react-router-dom';
+import { Navbar, NavItem, Nav, NavDropdown, MenuItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 
 import {
-  fetchPosts,
-  fetchCategories
+  fetchCategories,
+  sortPosts
 } from '../utils/thunk';
 
 
 class App extends Component {
   state = {
     selectedCat: "",
-    newPostOpen: false,
-    newCommentOpen: false
+  }
+
+  sortPosts = (e) => {
+    console.log("SOROTOTOTOT", e);
+    this.props.sortPosts(e);
   }
 
   componentDidMount(){
-    this.props.dispatch(fetchPosts());
-    this.props.dispatch(fetchCategories());
+    this.props.fetchCategories();
   }
 
-  //Controller for dropdown that selects and filters posts by category to display in body of page.
-  categorySelect = (e) => {
-    switch(e.target.value){
-      case("All"):
-        this.setState({
-          selectedCat: ""
-        });
-        return;
-      case(e.target.value):
-        this.setState({
-          selectedCat: e.target.value
-        })
-        return;
-      default:
-        return;
-    }
-  };
-
-  // toggleOpen = (e) => {
-  //   console.log("ToggleOpen: ", e.target);
-
-  // };
-
-  filterComments = (postId) => {
-    if (!this.props.comment || isEmpty(this.props.comment)){
-      return {};
-      // return this.props.comment.filter((n) => n.parentId === postId);
-      // return (this.props.comments.filter((n) => n.id === postId));
-    } else {
-      return this.props.comment.filter((n) => n.parentId === postId);
-    }
-  };
-
   render() {
-    console.log("APP rendered: ", this.props);
     return (
       <div className="App">
-        <header>
-          <p>THIS IS A CONTENT PLATFORM.</p>
-          <NewPost />
-        </header>
+        <Navbar>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <Link to='/'>Readable</Link>
+            </Navbar.Brand>
+          </Navbar.Header>
 
-        <div>
-          <select onChange={this.categorySelect}>
-            <option value="All">All</option>
-            { (this.props.categories)
-              ? this.props.categories.map((n) => <option key={n.name} value={n.name}>{n.name}</option>)
-              : "NO CATEGORIES FOUND" }
-          </select>    
+          <Nav>
+            <NavDropdown eventkey={1} title="Select Category" id="basic-nav-dropdown">
+              <MenuItem componentClass={Link} href="/" to="/">All</MenuItem>
+              {(this.props.categories) ? this.props.categories.map((n, i) => <LinkContainer key={`${n.name}`} to={`/${n.name}`}><MenuItem>{n.name}</MenuItem></LinkContainer>) : "No Categories Found"}
+            </NavDropdown>
 
-          { (!this.props.post[0]) 
-            ?  "NO POSTS FOUND"
-            : this.props.post.filter((n) => (this.state.selectedCat) ? n.category === this.state.selectedCat : n).map((m) => <Post key={m.id} post={m} comments={this.filterComments(m.id)}/>) }
+            <NavDropdown title="Select Filter" id="basic-nav-dropdown" onSelect={this.sortPosts}>
+              <MenuItem eventKey={'voteScore'}>Popular topics</MenuItem>
+              <MenuItem eventKey={'timestamp'}>Recent topics</MenuItem>
+            </NavDropdown>
 
-        </div>
+            <NavItem componentClass={Link} href="/new" to="/new">
+              New Post!
+            </NavItem>
+          </Nav>
+        </Navbar>
+
+        <Switch>
+          <Route exact path="/" component={Display} />
+          <Route exact path="/new" component={NewPost} />
+          <Route exact path="/:category" component={Display} />
+          <Route exact path="/:category/:postId" component={PostDetail} />
+          <Route exact path="/post/edit/:postId" component={EditPost} />
+          <Route exact path="/comment/edit/:commentId" component={EditComment} />
+        </Switch>
       </div>
     );
   }
 }
 
-function mapStateToProps({post, comment, categories}) {
+function mapStateToProps({ categories }) {
   return {
-    post: post,
-    comment: comment,
     categories: categories.categories
   }
 }
 
-export default connect(mapStateToProps)(App);
+export default withRouter(connect(mapStateToProps, { sortPosts, fetchCategories })(App));

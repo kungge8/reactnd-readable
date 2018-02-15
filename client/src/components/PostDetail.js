@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Row, Col, Panel, Button, Badge } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { sendVotePost, deletePost, fetchPosts } from '../utils/thunk';
+import { sendVotePost, deletePost, fetchPosts } from '../utils/posts';
 import Comment from './Comment';
 import NewComment from './NewComment';
 
@@ -21,7 +21,6 @@ class PostDetail extends Component {
 	}
 
 	render() {
-		console.log("PostDetail: ", this.props);
 		const { post } = this.props;
 
 		if (!post){

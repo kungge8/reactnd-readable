@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ID from 'uniqid';
-import { addPost } from '../utils/thunk.js';
+import { addPost } from '../utils/posts';
 import { Button, FormGroup, FormControl, ControlLabel, Panel, Grid } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 

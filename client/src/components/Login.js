@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Grid, Button, FormGroup, FormControl, ControlLabel, Panel } from  'react-bootstrap';
-import { login } from '../utils/thunk';
+import { login } from '../utils/user';
 
 const Login = (props) => {
 	const userLogin = (e) => {

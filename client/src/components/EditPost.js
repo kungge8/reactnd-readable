@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, FormGroup, FormControl, ControlLabel, Panel, Button } from 'react-bootstrap';
-import { postEdit, fetchPosts } from '../utils/thunk';
+import { postEdit, fetchPosts } from '../utils/posts';
 
 class EditPost extends Component {
 	sendEdit = (e) => {

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { sendCommentVote, deleteComment } from '../utils/thunk';
+import { sendCommentVote, deleteComment } from '../utils/comments';
 import { Panel, Button, Row, Col, Badge } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 

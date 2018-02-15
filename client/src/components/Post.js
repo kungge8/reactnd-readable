@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Panel, Button, Badge } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { sendVotePost, deletePost } from '../utils/thunk';
+import { sendVotePost, deletePost } from '../utils/posts';
 
 
 class Post extends Component {

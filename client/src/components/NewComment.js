@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { omit } from 'lodash';
 import ID from 'uniqid';
-import { addComment } from '../utils/thunk.js';	
+import { addComment } from '../utils/comments.js';	
 import { Button, FormGroup, FormControl, ControlLabel } from  'react-bootstrap';
 
 class NewComment extends Component {

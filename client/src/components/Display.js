@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Post from './Post';
 import { Grid } from 'react-bootstrap';
-import { fetchPosts } from '../utils/thunk';
+import { fetchPosts } from '../utils/posts';
 
 class Display extends Component {
 	componentDidMount() {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, FormGroup, FormControl, ControlLabel, Panel, Button } from 'react-bootstrap';
-import { commentEdit } from '../utils/thunk';
+import { commentEdit } from '../utils/comments';
 
 class EditComment extends Component {
 	sendEdit = (e) => {

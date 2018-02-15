@@ -11,11 +11,8 @@ import { Navbar, NavItem, Nav, NavDropdown, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 
-import {
-  fetchCategories,
-  sortPosts
-} from '../utils/thunk';
-
+import { fetchCategories } from '../utils/categories';
+import { sortPosts } from '../utils/posts';
 
 class App extends Component {
   state = {

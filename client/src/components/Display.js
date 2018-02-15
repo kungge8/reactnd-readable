@@ -5,10 +5,10 @@ import { Grid } from 'react-bootstrap';
 import { fetchPosts } from '../utils/thunk';
 
 class Display extends Component {
-
 	componentDidMount() {
 		this.props.fetchPosts();
 	}
+
 	render () {
 		const { posts } = this.props;
 		return (

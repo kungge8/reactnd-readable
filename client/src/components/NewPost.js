@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 import ID from 'uniqid';
 import { addPost } from '../utils/thunk.js';
 import { Button, FormGroup, FormControl, ControlLabel, Panel, Grid } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
 
 class NewPost extends Component {
 	state = {
 		title: "",
 		body: "",
-		author: "Alexander"
+		redirect: false
 	}
 
 	handleTitle = (e) => {
@@ -27,14 +28,25 @@ class NewPost extends Component {
 
 	sendPost = (e) => {
 		e.preventDefault();
-		this.props.addPost({
-			id: ID(),
-			timestamp: Date.now(),
-			...this.state
-		});
+		if (this.props.user === ""){
+			alert('Please log in!');
+		} else {
+			this.props.addPost({
+				id: ID(),
+				timestamp: Date.now(),
+				author: this.props.user,
+				...this.state
+			});
+
+			this.setState({ redirect: true });
+		}
 	}
 
 	render(){
+		if (this.state.redirect) {
+			return <Redirect push to='/' />
+		}
+
 		return (
 			<Grid>
 				<Panel>
@@ -81,9 +93,10 @@ class NewPost extends Component {
 	}
 }
 
-function mapStateToProps({ categories }){
+function mapStateToProps({ categories, user }){
 	return {
-		categories: categories.categories
+		categories: categories.categories,
+		user
 	}
 }
 

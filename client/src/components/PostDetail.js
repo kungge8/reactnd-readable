@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Row, Col, Panel, Button } from 'react-bootstrap';
+import { Grid, Row, Col, Panel, Button, Badge } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { sendVotePost, deletePost } from '../utils/thunk';
+import { sendVotePost, deletePost, fetchPosts } from '../utils/thunk';
 import Comment from './Comment';
 import NewComment from './NewComment';
 
@@ -14,6 +14,10 @@ class PostDetail extends Component {
 
 	removePost = (e) => {
 		this.props.deletePost(this.props.post.id);
+	}
+
+	componentDidMount() {
+		this.props.fetchPosts();
 	}
 
 	render() {
@@ -29,7 +33,7 @@ class PostDetail extends Component {
 					<Col xs={12}>
 						<Panel>
 							<Panel.Heading>
-								{post.title}
+								{post.title} - <Badge>{post.voteScore}</Badge> vote score
 							</Panel.Heading>
 
 							<Panel.Body>
@@ -37,7 +41,7 @@ class PostDetail extends Component {
 							</Panel.Body>
 
 							<Panel.Footer className={'clearfix'}>
-								Posted by: {post.author} at {Date(post.timestamp)}
+								Posted by: {post.author} at {Date(post.timestamp)} - <Badge>{this.props.comments.length}</Badge> comments
 								<Button className={'pull-right'} onClick={this.removePost}>Delete Post!</Button>
 								<LinkContainer className={'pull-right'} to={`/post/edit/${post.id}`}><Button>Edit Post</Button></LinkContainer>
 								<Button className={'pull-right'} onClick={this.sendVote} value="downVote">Downvote</Button>
@@ -62,4 +66,4 @@ function mapStateToProps ({ post, comment }, { match }){
 	};
 }
 
-export default connect(mapStateToProps, { sendVotePost, deletePost })(PostDetail);
+export default connect(mapStateToProps, { sendVotePost, deletePost, fetchPosts })(PostDetail);

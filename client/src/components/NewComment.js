@@ -9,8 +9,7 @@ class NewComment extends Component {
 	state = {
 		body: "",
 		parentId: this.props.parentId,
-		isOpen: false,
-		author: "Alexander"
+		isOpen: false
 	}
 
 	handleBody = (e) => {
@@ -18,23 +17,23 @@ class NewComment extends Component {
 	}
 
 	toggleOpen = () => {
-		if (this.state.isOpen){
-			this.setState({ isOpen: false });
-		} else {
-			this.setState({ isOpen: true });
-		}
+			this.setState({ isOpen: !this.state.isOpen });
 	}
 
 	sendComment = (e) => {
-		console.log("-----------------------");
 		e.preventDefault();
-		this.props.addComment({
-			id: ID(),
-			timestamp: Date.now(),
-			...omit(this.state, 'isOpen')
-		});
+		if (this.props.user === ""){
+			alert('Please log in!');
+		} else {
+			this.props.addComment({
+				id: ID(),
+				timestamp: Date.now(),
+				author: this.props.user,
+				...omit(this.state, 'isOpen')
+			});
 
-		this.setState({ isOpen: false });
+			this.setState({ isOpen: false });
+		}
 	}
 
 	render(){
@@ -61,8 +60,10 @@ class NewComment extends Component {
 	}
 }
 
-function mapStateToProps({}){
-	return {};
+function mapStateToProps ({ user }){
+	return {
+		user
+	};
 }
 
 export default connect(mapStateToProps, { addComment })(NewComment);

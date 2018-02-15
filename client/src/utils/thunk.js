@@ -2,6 +2,12 @@ import * as API from './api';
 
 import * as Act from '../actions';
 
+export const login = (user) => {
+	return (dispatch) => {
+		dispatch(Act.login(user));
+	}
+};
+
 export const fetchPosts = () => dispatch => (
 	API.fetchPosts()
 		.then((posts) => {

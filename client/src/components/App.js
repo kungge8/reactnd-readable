@@ -5,6 +5,7 @@ import NewPost from './NewPost';
 import PostDetail from './PostDetail';
 import EditPost from './EditPost';
 import EditComment from './EditComment';
+import Login from './Login';
 import { Link, Route, withRouter, Switch } from 'react-router-dom';
 import { Navbar, NavItem, Nav, NavDropdown, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -22,7 +23,6 @@ class App extends Component {
   }
 
   sortPosts = (e) => {
-    console.log("SOROTOTOTOT", e);
     this.props.sortPosts(e);
   }
 
@@ -54,12 +54,17 @@ class App extends Component {
             <NavItem componentClass={Link} href="/new" to="/new">
               New Post!
             </NavItem>
+
+            <NavItem componentClass={Link} href="/login" to="/login">
+              Login!
+            </NavItem>
           </Nav>
         </Navbar>
 
         <Switch>
           <Route exact path="/" component={Display} />
           <Route exact path="/new" component={NewPost} />
+          <Route exact path="/login" component={Login} />
           <Route exact path="/:category" component={Display} />
           <Route exact path="/:category/:postId" component={PostDetail} />
           <Route exact path="/post/edit/:postId" component={EditPost} />

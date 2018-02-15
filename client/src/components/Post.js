@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Panel, Button, Badge } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { sendVotePost } from '../utils/thunk';
+import { sendVotePost, deletePost } from '../utils/thunk';
 
 
 class Post extends Component {
@@ -11,7 +11,10 @@ class Post extends Component {
 		this.props.sendVotePost({ option: e.target.value }, this.props.post.id);
 	}
 
-	//why is post not rerendering after upvote count is changed? no change in state detected?
+	removePost = (e) => {
+		this.props.deletePost(this.props.post.id);
+	}
+
 	render() {
 		const { title, author, body, category, id, voteScore, timestamp } = this.props.post;
 		return (
@@ -30,6 +33,8 @@ class Post extends Component {
 					<Badge>{this.props.comments.filter((n) => n.parentId === id).length}</Badge> {'Comments '}
 					<Badge>{voteScore}</Badge> {'Upvotes! '}
 					Posted {Date(timestamp)}
+					<Button className={'pull-right'} onClick={this.removePost}>Delete Post!</Button>
+					<LinkContainer className={'pull-right'} to={`/post/edit/${id}`}><Button>Edit Post</Button></LinkContainer>
 					<Button className={'pull-right'} onClick={this.sendVote} value="downVote">Downvote</Button>
 					<Button className={'pull-right'} onClick={this.sendVote} value="upVote">Upvote</Button>
 					<LinkContainer className={'pull-right'} to={`/${category}/${id}`}><Button>Detailed View</Button></LinkContainer>
@@ -48,4 +53,4 @@ function mapStateToProps({ comment }) {
 	}
 }
 
-export default connect(mapStateToProps, { sendVotePost })(Post);
+export default connect(mapStateToProps, { sendVotePost, deletePost })(Post);

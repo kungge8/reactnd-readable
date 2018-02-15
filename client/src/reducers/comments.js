@@ -24,7 +24,7 @@ function comment (state = [], action){
 				} else {
 					return n;
 				}
-			})
+			});
 		case Types.GET_COMMENTS:
 			return comments;
 		case Types.CREATE_COMMENT:

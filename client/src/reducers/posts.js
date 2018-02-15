@@ -17,7 +17,7 @@ function post (state = [], action){
 					return n;
 				} else {
 					return n;
-				};
+				}
 			});
 		case Types.VOTE_POST :
 			return state.map((n) => {
@@ -26,7 +26,7 @@ function post (state = [], action){
 					return n;
 				} else {
 					return n;
-				};
+				}
 			});
 		case Types.GET_POSTS :
 			return posts;
